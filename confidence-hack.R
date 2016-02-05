@@ -23,3 +23,18 @@ analyze <- function(dataset, formula, n) {
 
     return(c(p, CIs[2,1], CIs[2,2], effect.size))
 }
+
+## Run analyze for several different formulas and return the result with the
+## best p value.
+p.hack <- function(dataset, formulas, n) {
+    assert_that(is.list(formulas))
+
+    results <- matrix(nrow=length(formulas), ncol=4)
+
+    for (i in seq_along(formulas)) {
+        results[i,] <- analyze(dataset, formulas[[i]], n)
+    }
+
+    best.result <- which.min(results[,1])
+    return(results[best.result,])
+}
