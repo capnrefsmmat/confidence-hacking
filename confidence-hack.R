@@ -38,3 +38,15 @@ p.hack <- function(dataset, formulas, n) {
     best.result <- which.min(results[,1])
     return(results[best.result,])
 }
+
+## Run hack.fn for several increasing sample sizes, stopping when condition.fn
+## reports the result is significant enough.
+n.hack <- function(dataset, formulas, ns, hack.fn, condition.fn) {
+    for (n in ns) {
+        result <- hack.fn(dataset[1:n,], formulas, n)
+
+        if (condition.fn(result)) { break }
+    }
+
+    return(result)
+}
